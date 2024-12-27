@@ -9,8 +9,11 @@ use anchor_spl::{
 };
 // use anchor_spl::metadata::types::DataV2;
 
-use mpl_token_metadata::types::DataV2;
-
+// use mpl_token_metadata::types::DataV2;
+use mpl_token_metadata::{
+    accounts::{ MasterEdition, Metadata as MetadataAccount },
+    types::DataV2
+};
 
 // use mpl_token_metadata::{
 //     accounts::{MasterEdition, },
@@ -118,30 +121,31 @@ pub struct InitNFT<'info> {
     /// CHECK - address
     #[account(
         mut,
-        // address=Metadata::find_pda(&mint.key()).0,
-        address = Pubkey::find_program_address(
-            &[
-                b"metadata",
-                mpl_token_metadata::ID.as_ref(),
-                mint.key().as_ref(),
-            ],
-            &mpl_token_metadata::ID,
-        ).0,
+        address=MetadataAccount::find_pda(&mint.key()).0,
+        // address = Pubkey::find_program_address(
+        //     &[
+        //         b"metadata",
+        //         mpl_token_metadata::ID.as_ref(),
+        //         mint.key().as_ref(),
+        //     ],
+        //     &mpl_token_metadata::ID,
+        // ).0,
     )]
     pub metadata_account: AccountInfo<'info>,
     /// CHECK: address
     #[account(
         mut,
         // address=find_master_edition_account(&mint.key()).0,
-        address = Pubkey::find_program_address(
-            &[
-                b"metadata",
-                mpl_token_metadata::ID.as_ref(),
-                mint.key().as_ref(),
-                b"edition",
-            ],
-            &mpl_token_metadata::ID,
-        ).0,
+        address = MasterEdition::find_pda(&mint.key()).0,
+        // address = Pubkey::find_program_address(
+        //     &[
+        //         b"metadata",
+        //         mpl_token_metadata::ID.as_ref(),
+        //         mint.key().as_ref(),
+        //         b"edition",
+        //     ],
+        //     &mpl_token_metadata::ID,
+        // ).0,
     )]
     pub master_edition_account: AccountInfo<'info>,
 
