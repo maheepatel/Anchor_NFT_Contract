@@ -5,7 +5,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-nft_contract = "DQN8avKWVrdHRorZ44CwjzCoZxpfKXmTquSTU6wiL1Sz"
+nft_contract = "65USePYd9nzjHHBFrSp9oxWjZKVJacE2Hx28aFpPkVpn"
 
 [registry]
 url = "https://api.apr.dev"

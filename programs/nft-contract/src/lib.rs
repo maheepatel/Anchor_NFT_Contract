@@ -3,18 +3,29 @@ use anchor_spl::{
     associated_token::AssociatedToken,
     metadata::{
         create_master_edition_v3, create_metadata_accounts_v3, CreateMasterEditionV3,
-        CreateMetadataAccountsV3, Metadata,
+        CreateMetadataAccountsV3,  Metadata
     },
     token::{mint_to, Mint, MintTo, Token, TokenAccount},
 };
-use mpl_token_metadata::{
-    pda::{find_master_edition_account, find_metadata_account},
-    state::DataV2,
-};
+// use anchor_spl::metadata::types::DataV2;
 
-declare_id!("DQN8avKWVrdHRorZ44CwjzCoZxpfKXmTquSTU6wiL1Sz");
+use mpl_token_metadata::types::DataV2;
+
+
+// use mpl_token_metadata::{
+//     accounts::{MasterEdition, },
+//     types::DataV2,
+// };
+
+
+// use mpl_token_metadata::{
+//     pda::{find_master_edition_account, find_metadata_account},
+//     state::DataV2,
+// };
+
+declare_id!("65USePYd9nzjHHBFrSp9oxWjZKVJacE2Hx28aFpPkVpn");
 #[program]
-pub mod solana_nft_anchor {
+pub mod nft_contract {
 
     use super::*;
 
@@ -107,13 +118,30 @@ pub struct InitNFT<'info> {
     /// CHECK - address
     #[account(
         mut,
-        address=find_metadata_account(&mint.key()).0,
+        // address=Metadata::find_pda(&mint.key()).0,
+        address = Pubkey::find_program_address(
+            &[
+                b"metadata",
+                mpl_token_metadata::ID.as_ref(),
+                mint.key().as_ref(),
+            ],
+            &mpl_token_metadata::ID,
+        ).0,
     )]
     pub metadata_account: AccountInfo<'info>,
     /// CHECK: address
     #[account(
         mut,
-        address=find_master_edition_account(&mint.key()).0,
+        // address=find_master_edition_account(&mint.key()).0,
+        address = Pubkey::find_program_address(
+            &[
+                b"metadata",
+                mpl_token_metadata::ID.as_ref(),
+                mint.key().as_ref(),
+                b"edition",
+            ],
+            &mpl_token_metadata::ID,
+        ).0,
     )]
     pub master_edition_account: AccountInfo<'info>,
 
