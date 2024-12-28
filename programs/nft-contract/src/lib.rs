@@ -7,24 +7,11 @@ use anchor_spl::{
     },
     token::{mint_to, Mint, MintTo, Token, TokenAccount},
 };
-// use anchor_spl::metadata::types::DataV2;
 
-// use mpl_token_metadata::types::DataV2;
 use mpl_token_metadata::{
     accounts::{ MasterEdition, Metadata as MetadataAccount },
     types::DataV2
 };
-
-// use mpl_token_metadata::{
-//     accounts::{MasterEdition, },
-//     types::DataV2,
-// };
-
-
-// use mpl_token_metadata::{
-//     pda::{find_master_edition_account, find_metadata_account},
-//     state::DataV2,
-// };
 
 declare_id!("65USePYd9nzjHHBFrSp9oxWjZKVJacE2Hx28aFpPkVpn");
 #[program]
@@ -111,6 +98,7 @@ pub struct InitNFT<'info> {
         mint::freeze_authority = signer.key(),
     )]
     pub mint: Account<'info, Mint>,
+    /// CHECK: ok, we are passing in this account ourselves
     #[account(
         init_if_needed,
         payer = signer,
@@ -121,15 +109,8 @@ pub struct InitNFT<'info> {
     /// CHECK - address
     #[account(
         mut,
+        // address=find_metadata_account(&mint.key()).0,
         address=MetadataAccount::find_pda(&mint.key()).0,
-        // address = Pubkey::find_program_address(
-        //     &[
-        //         b"metadata",
-        //         mpl_token_metadata::ID.as_ref(),
-        //         mint.key().as_ref(),
-        //     ],
-        //     &mpl_token_metadata::ID,
-        // ).0,
     )]
     pub metadata_account: AccountInfo<'info>,
     /// CHECK: address
@@ -137,15 +118,6 @@ pub struct InitNFT<'info> {
         mut,
         // address=find_master_edition_account(&mint.key()).0,
         address = MasterEdition::find_pda(&mint.key()).0,
-        // address = Pubkey::find_program_address(
-        //     &[
-        //         b"metadata",
-        //         mpl_token_metadata::ID.as_ref(),
-        //         mint.key().as_ref(),
-        //         b"edition",
-        //     ],
-        //     &mpl_token_metadata::ID,
-        // ).0,
     )]
     pub master_edition_account: AccountInfo<'info>,
 
