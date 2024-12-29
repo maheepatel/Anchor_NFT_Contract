@@ -24,7 +24,7 @@ describe("nft-contract", () => {
   const NFT_NAME = "Little Girl #0";
   const NFT_SYMBOL = "RINKS";
   const NFT_URI =
-    "https://gateway.pinata.cloud/ipfs/QmTxQkLojvYwfQWCjkfkFKWKKY5ZJVgCjb3RF9ycYKzteL/0.jpeg";
+    "http://127.0.0.1:8080/ipfs/QmfVuPfBXAiGdoibQrQsUTkQsxwDgDMUuFBVbyQaZmVDDW";
 
   it("Creates an NFT with metadata and master edition", async () => {
     // Generate a new mint keypair
